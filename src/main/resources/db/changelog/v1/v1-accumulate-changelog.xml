@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="v1-create-sequence-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-cred-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-user-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-location-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-auto-rent-table-chengelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-message-table-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="v1-create-photo-table-changelog.xml" relativeToChangelogFile="true"/>
+
+
+</databaseChangeLog>

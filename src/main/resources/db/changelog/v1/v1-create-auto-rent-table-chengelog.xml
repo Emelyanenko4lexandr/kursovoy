@@ -1,0 +1,108 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v1-create-auto-table" author="Emelyanenko Alexandr">
+        <createTable tableName="automobiles">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="brand" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="model" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="registration_number" type="varchar(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="location_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rent_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1-create-rent-table" author="Emelyanenko Alexandr">
+        <createTable tableName="rents">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="end_rental" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="start_rental" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="auto_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="v1-add-auto-foreign-keys" author="Emelyanenko Alexandr">
+        <addForeignKeyConstraint
+                baseTableName="automobiles"
+                baseColumnNames="owner_id"
+                constraintName="fkadrrrekcoytgbovlwmm024b9j"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION"/>
+
+        <addForeignKeyConstraint
+                baseTableName="automobiles"
+                baseColumnNames="location_id"
+                constraintName="fko8qs549a7812py82643xs7a1i"
+                referencedTableName="locations"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION"/>
+
+        <addForeignKeyConstraint
+                baseTableName="automobiles"
+                baseColumnNames="rent_id"
+                constraintName="fkon2ebtuh7rn6q51mkxrcoa7tk"
+                referencedTableName="rents"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="v1-add-rent-foreign-keys" author="Emelyanenko Alexandr">
+        <addForeignKeyConstraint
+                baseTableName="rents"
+                baseColumnNames="tenant_id"
+                constraintName="fkh1x5uxi3u5hmgnt8xieu004nj"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION"/>
+
+        <addForeignKeyConstraint
+                baseTableName="rents"
+                baseColumnNames="auto_id"
+                constraintName="fksvstgo2bpix1tvralw18lqcer"
+                referencedTableName="automobiles"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

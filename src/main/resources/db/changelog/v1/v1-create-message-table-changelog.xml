@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v1-create-message-table" author="Emelyanenko Alexandr">
+        <createTable tableName="messages">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="message" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="reason" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="recipient_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sender_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="messages"
+                baseColumnNames="sender_id"
+                constraintName="fk4ui4nnwntodh6wjvck53dbk9m"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION" />
+
+        <addForeignKeyConstraint
+                baseTableName="messages"
+                baseColumnNames="recipient_id"
+                constraintName="fkhdkwfnspwb3s60j27vpg0rpg6"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION" />
+    </changeSet>
+</databaseChangeLog>

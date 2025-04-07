@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v1-create-photo-table" author="Emelyanenko Alexandr">
+        <createTable tableName="photos">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="photo" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="position" type="integer">
+                <constraints nullable="true"/>
+            </column>
+            <column name="automobile_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="photos"
+                baseColumnNames="automobile_id"
+                constraintName="fkd49rmbtrudvi2a032abre0spf"
+                referencedTableName="automobiles"
+                referencedColumnNames="id"
+                onUpdate="NO ACTION"
+                onDelete="NO ACTION" />
+    </changeSet>
+
+</databaseChangeLog>

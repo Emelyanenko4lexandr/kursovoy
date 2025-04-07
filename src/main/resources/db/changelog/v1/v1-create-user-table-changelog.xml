@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="v1-create-user-table" author="Emelyanenko Alexandr" dbms="postgresql">
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="balance" type="double precision"/>
+            <column name="enable" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fio" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="credentials_id" type="bigint">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="users"
+                baseColumnNames="credentials_id"
+                constraintName="fk732k8fvdmf8q8msul077ck3a5"
+                referencedTableName="credentials"
+                referencedColumnNames="id"
+                onDelete="NO ACTION"
+                onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>
