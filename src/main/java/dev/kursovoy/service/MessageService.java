@@ -3,6 +3,7 @@ package dev.kursovoy.service;
 import dev.kursovoy.DTO.MessageResponse;
 import dev.kursovoy.entity.Message;
 import dev.kursovoy.entity.User;
+import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.MessageMapper;
 import dev.kursovoy.repository.MessageRepository;
 import dev.kursovoy.repository.UserRepository;
@@ -28,7 +29,7 @@ public class MessageService {
     public List<MessageResponse> getMessages(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         List<Message> messages = messageRepository.findByRecipient(currentUser);
 
@@ -41,7 +42,7 @@ public class MessageService {
     public void deleteMessages(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         List<Message> messages = messageRepository.findByRecipient(currentUser);
 

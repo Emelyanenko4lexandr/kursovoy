@@ -4,6 +4,7 @@ import dev.kursovoy.DTO.RegistrationRequest;
 import dev.kursovoy.entity.Credentials;
 import dev.kursovoy.entity.Role;
 import dev.kursovoy.entity.User;
+import dev.kursovoy.exception.ConflictException;
 import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,7 @@ public class AuthorizationService {
         //todo controlleradvice
         if (userRepository.findByCredUsername(request.getUsername()).isPresent()) {
             //todo make custom exception
-            throw new RuntimeException("Username already exists");
+            throw new ConflictException("Username already exists");
         }
 
         Credentials credentials = new Credentials(request.getUsername(), request.getPassword());

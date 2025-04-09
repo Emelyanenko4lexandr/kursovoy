@@ -3,6 +3,7 @@ package dev.kursovoy.service;
 import dev.kursovoy.DTO.AutoResponse;
 import dev.kursovoy.DTO.RentResponse;
 import dev.kursovoy.entity.*;
+import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.AutoMapper;
 import dev.kursovoy.mapper.RentMapper;
 import dev.kursovoy.repository.AutomobileRepository;
@@ -37,7 +38,7 @@ public class RentService {
         List<Rent> allRents = (List<Rent>) rentRepository.findAll();
 
         if (allRents.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rents not found");
+            throw new NotFoundException("Rents not found");
         }
 
         List<RentResponse> rentResponseList = rentMapper.toRentResponseList(allRents);
@@ -48,11 +49,12 @@ public class RentService {
     public AutoResponse getRent(Long autoId, String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         Automobile auto = automobileRepository.findByIdAndStatus(autoId, CarStatus.FREE)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Automobile not found"));
+                .orElseThrow(() -> new NotFoundException("Automobile not found"));
 
+        //todo BAD_REQUEST exception
         if (auto.getRent() != null || auto.getStatus() != CarStatus.FREE) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The car cannot be rented");
         } else {
@@ -78,13 +80,13 @@ public class RentService {
     public AutoResponse endRent(String name, Long autoId, Double latitude, Double longitude) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         Automobile auto = automobileRepository.findById(autoId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Automobile not found"));
+                .orElseThrow(() -> new NotFoundException("Automobile not found"));
 
         Rent rent = rentRepository.findByAutoAndTenantAndStatus(auto, currentUser, RentStatus.ACTIVE)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rent not found"));
+                .orElseThrow(() -> new NotFoundException("Rent not found"));
 
         Location newLocation = new Location(null, latitude, longitude);
 

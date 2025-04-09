@@ -2,6 +2,7 @@ package dev.kursovoy.service;
 
 import dev.kursovoy.DTO.PhotoResponse;
 import dev.kursovoy.entity.Photo;
+import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.PhotoMapper;
 import dev.kursovoy.repository.PhotoRepository;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class PhotoService {
         }
 
         if (photos.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No photos found for this automobile or position");
+            throw new NotFoundException("No photos found for this automobile or position");
         }
 
         List<PhotoResponse> photoResponseList = photoMapper.toResponseList(photos);
@@ -49,7 +50,7 @@ public class PhotoService {
         photos = photoRepository.findByAutomobileId(autoId);
 
         if (photos.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No photos found for this automobile or position");
+            throw new NotFoundException("No photos found for this automobile or position");
         }
 
         List<PhotoResponse> photoResponseList = photoMapper.toResponseList(photos);

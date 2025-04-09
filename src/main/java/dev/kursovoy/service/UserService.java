@@ -2,6 +2,7 @@ package dev.kursovoy.service;
 
 import dev.kursovoy.DTO.UserResponse;
 import dev.kursovoy.entity.User;
+import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.UserMapper;
 import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class UserService {
     public UserResponse getCurrentUser(String name) {
 
         User user = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         UserResponse userResponse = userMapper.userToUserResponse(user);
 
@@ -34,7 +35,7 @@ public class UserService {
     public String getUserRole(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         String userRole = currentUser.getRole().toString();
 
@@ -44,8 +45,9 @@ public class UserService {
     public Double addBalance(Double sum, String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
+        //todo BAD_REQUEST exception
         if (sum == null || sum <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount must be greater than zero");
         }
