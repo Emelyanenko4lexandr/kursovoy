@@ -34,6 +34,8 @@ dependencies {
 
 	implementation 'org.liquibase:liquibase-core:4.9.1'
 
+	implementation 'io.minio:minio:8.5.17'
+
 }
 
 tasks.named('test') {

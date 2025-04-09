@@ -9,12 +9,14 @@ import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class MessageService {
 
     private final UserRepository userRepository;
@@ -22,6 +24,7 @@ public class MessageService {
 
     private final MessageMapper messageMapper;
 
+    @Transactional(readOnly = true)
     public List<MessageResponse> getMessages(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)

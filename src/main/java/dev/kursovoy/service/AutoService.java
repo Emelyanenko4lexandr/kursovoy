@@ -3,6 +3,7 @@ package dev.kursovoy.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kursovoy.DTO.*;
 import dev.kursovoy.entity.*;
+import dev.kursovoy.exception.ConflictException;
 import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.AutoMapper;
 import dev.kursovoy.mapper.LocationMapper;
@@ -10,6 +11,7 @@ import dev.kursovoy.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class AutoService {
 
     private final AutomobileRepository automobileRepository;
@@ -31,6 +34,7 @@ public class AutoService {
     private final AutoMapper autoMapper;
     private final LocationMapper locationMapper;
 
+    @Transactional(readOnly = true)
     public List<AutoResponse> getFreeAuto() {
 
         List<Automobile> freeAutomobiles = automobileRepository.findByStatus(CarStatus.FREE);
@@ -39,6 +43,7 @@ public class AutoService {
         return AutoResponseList;
     }
 
+    @Transactional(readOnly = true)
     public List<AllParametersDTO> getAllAuto() {
 
         List<Automobile> automobilesList = (List<Automobile>) automobileRepository.findAll();
@@ -106,6 +111,7 @@ public class AutoService {
         return autoResponse;
     }
 
+    @Transactional(readOnly = true)
     public String getAuto(Long autoId) {
 
         Automobile auto = automobileRepository.findById(autoId)
@@ -128,7 +134,7 @@ public class AutoService {
 
             //todo conflict exception
             if (automobileRepository.findByRegistrationNumber(publishedAuto.getRegistration_number()).isPresent()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration number already exists");
+                throw new ConflictException("Registration number already exists");
             }
 
             Automobile automobile = new Automobile(
@@ -187,6 +193,7 @@ public class AutoService {
         return autoResponse;
     }
 
+    @Transactional(readOnly = true)
     public List<OwnerAutoResponse> getOwnerCars(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
@@ -203,6 +210,7 @@ public class AutoService {
         return OwnerAutoResponseList;
     }
 
+    @Transactional(readOnly = true)
     public List<AutoResponse> getRentedAuto(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)
@@ -217,6 +225,7 @@ public class AutoService {
         return rentesCarList;
     }
 
+    @Transactional(readOnly = true)
     public LocationResponse getCarLocation(Long autoId) {
 
         Automobile automobile = automobileRepository.findById(autoId)

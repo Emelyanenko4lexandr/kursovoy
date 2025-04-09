@@ -7,16 +7,19 @@ import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
+    @Transactional(readOnly = true)
     public UserResponse getCurrentUser(String name) {
 
         User user = userRepository.findByCredUsername(name)
@@ -27,6 +30,7 @@ public class UserService {
         return userResponse;
     }
 
+    @Transactional(readOnly = true)
     public String getUserRole(String name) {
 
         User currentUser = userRepository.findByCredUsername(name)

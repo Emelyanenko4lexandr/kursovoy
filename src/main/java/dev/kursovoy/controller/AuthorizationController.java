@@ -4,7 +4,6 @@ import dev.kursovoy.DTO.RegistrationRequest;
 import dev.kursovoy.service.AuthorizationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -25,7 +24,7 @@ public class AuthorizationController {
     private final AuthorizationService authorizationService;
 
     @PostMapping(value = "/registration")
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest request) {
+    public String registerUser(@RequestBody RegistrationRequest request) {
 
         return authorizationService.registerUser(request);
     }

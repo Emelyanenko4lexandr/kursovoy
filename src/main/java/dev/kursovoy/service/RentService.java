@@ -11,8 +11,8 @@ import dev.kursovoy.repository.RentRepository;
 import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
@@ -20,6 +20,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class RentService {
 
     private final RentRepository rentRepository;
@@ -30,6 +31,7 @@ public class RentService {
     private final RentMapper rentMapper;
     private final AutoMapper autoMapper;
 
+    @Transactional(readOnly = true)
     public List<RentResponse> getAllRents() {
 
         List<Rent> allRents = (List<Rent>) rentRepository.findAll();
