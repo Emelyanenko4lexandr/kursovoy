@@ -6,7 +6,7 @@ public record AllParametersDTO (
         Long id,
         String brand,
         String model,
-        String registration_number,
+        String registrationNumber,
         CarStatus status,
         String owner,
         String tenant,

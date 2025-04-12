@@ -6,7 +6,7 @@
 
     <changeSet id="v1-create-user-table" author="Emelyanenko Alexandr" dbms="postgresql">
         <createTable tableName="users">
-            <column name="id" type="bigint">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="balance" type="double precision"/>

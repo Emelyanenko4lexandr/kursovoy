@@ -2,14 +2,13 @@ package dev.kursovoy.service;
 
 import dev.kursovoy.DTO.UserResponse;
 import dev.kursovoy.entity.User;
+import dev.kursovoy.exception.BadRequestException;
 import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.UserMapper;
 import dev.kursovoy.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @AllArgsConstructor
@@ -21,14 +20,19 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Transactional(readOnly = true)
+    public User getUserByUsername(String username) {
+
+        return userRepository.findByCredUsername(username)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    @Transactional(readOnly = true)
     public UserResponse getCurrentUser(String name) {
 
         User user = userRepository.findByCredUsername(name)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        UserResponse userResponse = userMapper.userToUserResponse(user);
-
-        return userResponse;
+        return userMapper.userToUserResponse(user);
     }
 
     @Transactional(readOnly = true)
@@ -37,9 +41,7 @@ public class UserService {
         User currentUser = userRepository.findByCredUsername(name)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
-        String userRole = currentUser.getRole().toString();
-
-        return userRole;
+        return currentUser.getRole().toString();
     }
 
     public Double addBalance(Double sum, String name) {
@@ -49,7 +51,7 @@ public class UserService {
 
         //todo BAD_REQUEST exception
         if (sum == null || sum <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount must be greater than zero");
+            throw new BadRequestException("Amount must be greater than zero");
         }
 
         currentUser.setBalance(currentUser.getBalance() + sum);

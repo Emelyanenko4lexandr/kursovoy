@@ -6,6 +6,6 @@ public record OwnerAutoResponse (
         Long id,
         String brand,
         String model,
-        String registration_number,
+        String registrationNumber,
         CarStatus status) {
 }

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RentRepository extends CrudRepository<Rent, Long> {
-    List<Rent> findByTenant(User tenant);
-
+    List<Rent> findByTenantAndStatus(User tenant, RentStatus status);
     Optional<Rent> findByAutoAndTenantAndStatus(Automobile auto, User tenant, RentStatus status);
 }

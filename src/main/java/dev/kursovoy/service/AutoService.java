@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -26,31 +25,29 @@ import java.util.Map;
 public class AutoService {
 
     private final AutomobileRepository automobileRepository;
-    private final UserRepository userRepository;
     private final MessageRepository messageRepository;
-    private final PhotoRepository photoRepository;
     private final RentRepository rentRepository;
 
     private final AutoMapper autoMapper;
     private final LocationMapper locationMapper;
 
+    private final PhotoService photoService;
+    private final UserService userService;
+
     @Transactional(readOnly = true)
     public List<AutoResponse> getFreeAuto() {
 
         List<Automobile> freeAutomobiles = automobileRepository.findByStatus(CarStatus.FREE);
-        List<AutoResponse> AutoResponseList = autoMapper.toAutoResponseList(freeAutomobiles);
 
-        return AutoResponseList;
+        return autoMapper.toAutoResponseList(freeAutomobiles);
     }
 
     @Transactional(readOnly = true)
     public List<AllParametersDTO> getAllAuto() {
 
         List<Automobile> automobilesList = (List<Automobile>) automobileRepository.findAll();
-        List<AllParametersDTO> AllParametersDTOList = autoMapper.toAllParametersDTOList(automobilesList);
 
-        return AllParametersDTOList;
-
+        return autoMapper.toAllParametersDTOList(automobilesList);
     }
 
     public AutoResponse verifyAuto(Long autoId, String name) {
@@ -62,8 +59,7 @@ public class AutoService {
 
         automobileRepository.save(autoOnVerifiction);
 
-        User sender = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User sender = userService.getUserByUsername(name);
 
         String messageText = "Car: " + autoOnVerifiction.getBrand() + " " + autoOnVerifiction.getModel() +
                 " has been successfully verified and can be rented";
@@ -78,9 +74,7 @@ public class AutoService {
 
         messageRepository.save(message);
 
-        AutoResponse autoResponse = autoMapper.toAutoResponse(autoOnVerifiction);
-
-        return autoResponse;
+        return autoMapper.toAutoResponse(autoOnVerifiction);
     }
 
     public AutoResponse deleteUnverifiedAuto(UnverifiedRequest request, String name) {
@@ -90,8 +84,7 @@ public class AutoService {
 
         AutoResponse autoResponse = autoMapper.toAutoResponse(auto);
 
-        User sender = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User sender = userService.getUserByUsername(name);
 
         String messageText = "Car: " + auto.getBrand() + " " + auto.getModel() + " was not verified";
 
@@ -124,15 +117,13 @@ public class AutoService {
 
     public Map<String, String> publishAuto(String publishedAutoJson, MultipartFile[] files, String username) {
 
-        User owner = userRepository.findByCredUsername(username)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User owner = userService.getUserByUsername(username);
 
         try {
             // Преобразуем JSON строку в объект PublishAutoDTO
             ObjectMapper objectMapper = new ObjectMapper();
             PublishAutoDTO publishedAuto = objectMapper.readValue(publishedAutoJson, PublishAutoDTO.class);
 
-            //todo conflict exception
             if (automobileRepository.findByRegistrationNumber(publishedAuto.getRegistration_number()).isPresent()) {
                 throw new ConflictException("Registration number already exists");
             }
@@ -153,18 +144,8 @@ public class AutoService {
                 MultipartFile file = files[i];
                 Integer position = i + 1;
 
-                // Преобразуем фото в Base64
-                String base64Photo = "data:" + file.getContentType() + ";base64," +
-                        Base64.getEncoder().encodeToString(file.getBytes());
+                photoService.uploadPhoto(file, username, automobile, position);
 
-                Photo photo = new Photo(
-                        base64Photo,
-                        automobile,
-                        position
-                );
-                photoRepository.save(photo);
-
-                automobile.getPhotos().add(photo);
             }
 
             automobileRepository.save(automobile);
@@ -188,16 +169,13 @@ public class AutoService {
 
         automobileRepository.save(auto);
 
-        AutoResponse autoResponse = autoMapper.toAutoResponse(auto);
-
-        return autoResponse;
+        return autoMapper.toAutoResponse(auto);
     }
 
     @Transactional(readOnly = true)
     public List<OwnerAutoResponse> getOwnerCars(String name) {
 
-        User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User currentUser = userService.getUserByUsername(name);
 
         List<Automobile> ownerCars = automobileRepository.findByOwnerAndStatusNot(currentUser, CarStatus.DELETED);
 
@@ -205,24 +183,17 @@ public class AutoService {
             throw new NotFoundException("No cars found for the user");
         }
 
-        List<OwnerAutoResponse> OwnerAutoResponseList = autoMapper.toOwnerAutoResponseList(ownerCars);
-
-        return OwnerAutoResponseList;
+        return autoMapper.toOwnerAutoResponseList(ownerCars);
     }
 
     @Transactional(readOnly = true)
     public List<AutoResponse> getRentedAuto(String name) {
 
-        User currentUser = userRepository.findByCredUsername(name)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User currentUser = userService.getUserByUsername(name);
 
-        List<Rent> activeRents = rentRepository.findByTenant(currentUser).stream()
-                .filter(rent -> rent.getStatus() == RentStatus.ACTIVE)
-                .toList();
+        List<Rent> activeRents = rentRepository.findByTenantAndStatus(currentUser, RentStatus.ACTIVE);
 
-        List<AutoResponse> rentesCarList = autoMapper.toAutoResponseListFromRent(activeRents);
-
-        return rentesCarList;
+        return autoMapper.toAutoResponseListFromRent(activeRents);
     }
 
     @Transactional(readOnly = true)
@@ -236,9 +207,7 @@ public class AutoService {
             throw new NotFoundException("Location not found foe this automobile");
         }
 
-        LocationResponse locationResponse = locationMapper.toLocationResponse(location);
-
-        return locationResponse;
+        return locationMapper.toLocationResponse(location);
     }
 }
 

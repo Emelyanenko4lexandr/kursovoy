@@ -1,5 +1,6 @@
 package dev.kursovoy.service;
 
+import dev.kursovoy.exception.BadRequestException;
 import dev.kursovoy.exception.ConflictException;
 import dev.kursovoy.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<String> handleConflictException(ConflictException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleBadRequestException(BadRequestException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }

@@ -32,7 +32,7 @@ public interface AutoMapper {
     @Mapping(target = "id", source = "auto.id")
     @Mapping(target = "brand", source = "auto.brand")
     @Mapping(target = "model", source = "auto.model")
-    @Mapping(target = "registration_number", source = "auto.registrationNumber")
+    @Mapping(target = "registrationNumber", source = "auto.registrationNumber")
     @Mapping(target = "status", source = "auto.status")
     @Mapping(target = "startRental", source = "startRental")
     AutoResponse toAutoResponseFromRent(Rent rent);

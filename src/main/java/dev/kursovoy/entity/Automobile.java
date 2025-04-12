@@ -17,22 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Automobile {
 
-    public Automobile(Long id, String brand, String model, String registration_number,
-                      CarStatus status, User owner) {
-        this.id = id;
-        this.brand = brand;
-        this.model = model;
-        this.registrationNumber = registration_number;
-        this.status = status;
-        this.owner = owner;
-    }
 
-    public Automobile(Long id, String brand, String model, String registration_number,
+    public Automobile(Long id, String brand, String model, String registrationNumber,
                       CarStatus status, User owner, Location location) {
         this.id = id;
         this.brand = brand;
         this.model = model;
-        this.registrationNumber = registration_number;
+        this.registrationNumber = registrationNumber;
         this.status = status;
         this.owner = owner;
         this.location = location;
@@ -56,11 +47,11 @@ public class Automobile {
     private User owner;
 
     @OneToOne
-    @JoinColumn(name = "rent_id", nullable = true)
+    @JoinColumn(name = "rent_id")
     private Rent rent;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id", nullable = true)
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @OneToMany(mappedBy = "automobile", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

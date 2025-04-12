@@ -28,8 +28,8 @@ public class Photo {
 
     private Integer position;
 
-    public Photo(String base64Photo, Automobile automobile, Integer position) {
-        this.photo = base64Photo;
+    public Photo(String photo, Automobile automobile, Integer position) {
+        this.photo = photo;
         this.automobile = automobile;
         this.position = position;
     }

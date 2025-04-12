@@ -23,9 +23,7 @@ public class AuthorizationService {
     //todo synchronized убрать, добавть transactional, aspect, response entity убрать
     public String registerUser(RegistrationRequest request) {
 
-        //todo controlleradvice
         if (userRepository.findByCredUsername(request.getUsername()).isPresent()) {
-            //todo make custom exception
             throw new ConflictException("Username already exists");
         }
 
