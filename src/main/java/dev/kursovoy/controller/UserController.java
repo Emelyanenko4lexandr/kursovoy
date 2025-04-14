@@ -1,15 +1,11 @@
 package dev.kursovoy.controller;
 
 import dev.kursovoy.DTO.UserResponse;
-import dev.kursovoy.entity.User;
-import dev.kursovoy.mapper.UserMapper;
-import dev.kursovoy.repository.UserRepository;
 import dev.kursovoy.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +31,8 @@ public class UserController {
 
     @GetMapping(value = "/userrole", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getUserRole(Principal principal) {
+
+        // В разрезе всей программы стоит использовать запрос на пользователя не в сторонних сервисах
         return userService.getUserRole(principal.getName());
     }
 

@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface AutomobileRepository extends CrudRepository<Automobile, Long> {
     List<Automobile> findByStatus(CarStatus status);
     List<Automobile> findByOwnerAndStatusNot(User owner, CarStatus status);
+
+    // Подумай над использованием @Query
     Optional<Automobile> findByIdAndStatus(Long id, CarStatus status);
     Optional<Automobile> findByRegistrationNumber(String registrationNumber);
 }

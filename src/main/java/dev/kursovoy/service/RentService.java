@@ -90,6 +90,7 @@ public class RentService {
             auto.setLocation(newLocation);
             automobileRepository.save(auto);
 
+            // Попробуй посмотреть триггеры
             rent.setStatus(RentStatus.FINISHED);
             rent.setEndRental(Instant.now());
             rentRepository.save(rent);
