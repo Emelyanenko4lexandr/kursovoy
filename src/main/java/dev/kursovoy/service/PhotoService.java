@@ -7,10 +7,7 @@ import dev.kursovoy.exception.ConflictException;
 import dev.kursovoy.exception.NotFoundException;
 import dev.kursovoy.mapper.PhotoMapper;
 import dev.kursovoy.repository.PhotoRepository;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +26,7 @@ public class PhotoService {
 
     private final MinioClient minioClient = MinioClient
             .builder()
-            .endpoint("http://localhost:9000")
+            .endpoint("http://minio:9000")
             .credentials("minioadmin", "minioadmin")
             .build();
 

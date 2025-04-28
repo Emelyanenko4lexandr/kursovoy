@@ -12,6 +12,7 @@
     <include file="v1-create-message-table-changelog.xml" relativeToChangelogFile="true"/>
     <include file="v1-create-photo-table-changelog.xml" relativeToChangelogFile="true"/>
     <include file="db/changelog/v1/v1-create-start-users-credentials.sql"/>
+    <include file="db/changelog/v1/v1-create-end-rent-trigger.sql"/>
 
 
 </databaseChangeLog>

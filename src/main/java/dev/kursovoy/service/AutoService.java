@@ -177,7 +177,7 @@ public class AutoService {
 
         User currentUser = userService.getUserByUsername(name);
 
-        List<Automobile> ownerCars = automobileRepository.findByOwnerAndStatusNot(currentUser, CarStatus.DELETED);
+        List<Automobile> ownerCars = automobileRepository.findActiveOwnerCars(currentUser.getId());
 
         if (ownerCars.isEmpty()) {
             throw new NotFoundException("No cars found for the user");

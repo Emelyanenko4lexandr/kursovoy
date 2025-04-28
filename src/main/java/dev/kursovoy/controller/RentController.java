@@ -40,9 +40,8 @@ public class RentController {
     }
 
     @PutMapping(value = "/rents", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AutoResponse endRent(@RequestBody EndRentReques request, Principal principal) {
+    public AutoResponse endRent(@RequestBody EndRentReques request) {
         return rentService.endRent(
-                principal.getName(),
                 request.getAutoId(),
                 request.getLatitude(),
                 request.getLongitude());

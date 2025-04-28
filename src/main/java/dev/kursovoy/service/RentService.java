@@ -70,34 +70,17 @@ public class RentService {
         }
     }
 
-    public AutoResponse endRent(String name, Long autoId, Double latitude, Double longitude) {
-
-        User currentUser = userService.getUserByUsername(name);
+    public AutoResponse endRent(Long autoId, Double latitude, Double longitude) {
 
         Automobile auto = automobileRepository.findById(autoId)
                 .orElseThrow(() -> new NotFoundException("Automobile not found"));
 
-        Rent rent = rentRepository.findByAutoAndTenantAndStatus(auto, currentUser, RentStatus.ACTIVE)
-                .orElseThrow(() -> new NotFoundException("Rent not found"));
-
         Location newLocation = new Location(null, latitude, longitude);
-
-        Location oldLocation = auto.getLocation();
 
         if (latitude != null && longitude != null) {
             auto.setRent(null);
-            auto.setStatus(CarStatus.FREE);
             auto.setLocation(newLocation);
             automobileRepository.save(auto);
-
-            // Попробуй посмотреть триггеры
-            rent.setStatus(RentStatus.FINISHED);
-            rent.setEndRental(Instant.now());
-            rentRepository.save(rent);
-
-            if (oldLocation != null) {
-                locationRepository.delete(oldLocation); // Удаляем старое местоположение
-            }
         }
 
         return autoMapper.toAutoResponse(auto);
