@@ -19,12 +19,13 @@ public class Automobile {
 
 
     public Automobile(Long id, String brand, String model, String registrationNumber,
-                      CarStatus status, User owner, Location location) {
+                      CarStatus status, Double rating, User owner, Location location) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.registrationNumber = registrationNumber;
         this.status = status;
+        this.rating = rating;
         this.owner = owner;
         this.location = location;
     }
@@ -41,6 +42,8 @@ public class Automobile {
 
     @Enumerated(EnumType.STRING)
     private CarStatus status;
+
+    private Double rating;
 
     @OneToOne
     @JoinColumn(name = "owner_id", nullable = false)

@@ -77,8 +77,7 @@ services:
     command: server /data --console-address ":45733"
 
   reviewservice:
-    build:
-      context: /Users/aleksandremelanenko/Documents/Универ/ReviewService
+    image: m1st4k9/reviewservice
     container_name: reviewservice
     depends_on:
       - postgres_reviews

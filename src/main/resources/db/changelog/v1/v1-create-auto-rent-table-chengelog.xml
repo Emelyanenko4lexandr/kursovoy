@@ -21,6 +21,9 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
+            <column name="rating" type="double">
+                <constraints nullable="true"/>
+            </column>
             <column name="location_id" type="bigint">
                 <constraints nullable="true"/>
             </column>

@@ -134,6 +134,7 @@ public class AutoService {
                     publishedAuto.getModel(),
                     publishedAuto.getRegistration_number(),
                     CarStatus.VERIFICATION,
+                    null,
                     owner,
                     new Location(null, publishedAuto.getLatitude(), publishedAuto.getLongitude())
             );
