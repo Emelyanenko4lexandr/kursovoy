@@ -1,3 +1,4 @@
+/*
 package dev.kursovoy.service;
 
 import dev.kursovoy.entity.Automobile;
@@ -42,3 +43,4 @@ public class ReviewListenerService {
 
     }
 }
+*/

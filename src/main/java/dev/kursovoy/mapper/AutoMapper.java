@@ -13,6 +13,8 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AutoMapper {
+
+    @Mapping(target = "startRental", ignore = true)
     AutoResponse toAutoResponse(Automobile auto);
 
     List<AutoResponse> toAutoResponseList(List<Automobile> autos);

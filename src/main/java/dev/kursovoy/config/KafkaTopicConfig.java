@@ -1,3 +1,4 @@
+/*
 package dev.kursovoy.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
@@ -15,3 +16,4 @@ public class KafkaTopicConfig {
                 .build();
     }
 }
+*/

@@ -31,7 +31,7 @@ public class AutoService {
     private final AutoMapper autoMapper;
     private final LocationMapper locationMapper;
 
-    private final PhotoService photoService;
+//    private final PhotoService photoService;
     private final UserService userService;
 
     @Transactional(readOnly = true)
@@ -141,13 +141,13 @@ public class AutoService {
 
             automobileRepository.save(automobile);
 
-            for (int i = 0; i < files.length; i++) {
-                MultipartFile file = files[i];
-                Integer position = i + 1;
-
-                photoService.uploadPhoto(file, username, automobile, position);
-
-            }
+//            for (int i = 0; i < files.length; i++) {
+//                MultipartFile file = files[i];
+//                Integer position = i + 1;
+//
+//                photoService.uploadPhoto(file, username, automobile, position);
+//
+//            }
 
             automobileRepository.save(automobile);
 

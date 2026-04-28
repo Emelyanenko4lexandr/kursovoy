@@ -1,3 +1,4 @@
+/*
 package dev.kursovoy.service;
 
 import dev.kursovoy.DTO.PhotoResponse;
@@ -102,3 +103,4 @@ public class PhotoService {
         return photoMapper.toResponseList(photos);
     }
 }
+*/

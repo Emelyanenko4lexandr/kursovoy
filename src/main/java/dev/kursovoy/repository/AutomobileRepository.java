@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface AutomobileRepository extends CrudRepository<Automobile, Long> {
     List<Automobile> findByStatus(CarStatus status);
 
-    @Query(value = "SELECT * FROM automobiles a WHERE a.owner_id = :ownerId AND a.status != 'DELETED'",
-            nativeQuery = true)
+    @Query("SELECT a FROM Automobile a WHERE a.owner.id = :ownerId AND a.status <> 'DELETED'")
     List<Automobile> findActiveOwnerCars(@Param("ownerId") Long ownerId);
 
     // Подумай над использованием @Query

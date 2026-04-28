@@ -10,5 +10,6 @@ public record AutoResponse(
         String model,
         String registrationNumber,
         CarStatus status,
-        Instant startRental) {
+        Instant startRental
+) {
 }

@@ -1,3 +1,4 @@
+/*
 package dev.kursovoy.controller;
 
 import dev.kursovoy.DTO.PhotoRequest;
@@ -34,3 +35,4 @@ public class PhotoController {
     }
 
 }
+*/

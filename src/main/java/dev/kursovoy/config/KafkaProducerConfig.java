@@ -1,3 +1,4 @@
+/*
 package dev.kursovoy.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -39,3 +40,4 @@ public class KafkaProducerConfig {
     }
 
 }
+*/
