@@ -59,10 +59,10 @@ public class SecurityConfig {
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .usersByUsernameQuery(
                         "select c.username, c.password, u.enable "
-                        + "from users u "
+                        + "from app_users u "
                         + "join credentials c on u.credentials_id = c.id "
                         + "where c.username = ?")
-                .authoritiesByUsernameQuery("select c.username, u.role from users u "
+                .authoritiesByUsernameQuery("select c.username, u.role from app_users u "
                         + "join credentials c on u.credentials_id = c.id "
                         + "where c.username = ?");
     }

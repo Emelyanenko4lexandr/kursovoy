@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @Table(name= "credentials")
@@ -19,13 +21,13 @@ public class Credentials {
 
     static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Credentials( String username, String password) {
+    public Credentials(String username, String password) {
+        this.id = System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000);
         this.username = username;
         this.password = passwordEncoder.encode(password);
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;

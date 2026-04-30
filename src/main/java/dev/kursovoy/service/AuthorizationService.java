@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class AuthorizationService {
 
         Credentials credentials = new Credentials(request.getUsername(), request.getPassword());
 
-        User user = new User(null, credentials, request.getFio(), Role.USER, 0.0, true);
+        User user = new User(System.currentTimeMillis() + new Random().nextInt(1000), credentials, request.getFio(), Role.USER, 0.0, true);
 
         userRepository.save(user);
 
