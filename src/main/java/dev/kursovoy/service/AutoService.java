@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @AllArgsConstructor
@@ -65,7 +66,7 @@ public class AutoService {
                 " has been successfully verified and can be rented";
 
         Message message = new Message(
-                null,
+                System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000),
                 sender,
                 autoOnVerifiction.getOwner(),
                 MessageType.APPROVED,
@@ -89,7 +90,7 @@ public class AutoService {
         String messageText = "Car: " + auto.getBrand() + " " + auto.getModel() + " was not verified";
 
         Message message = new Message(
-                null,
+                System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000),
                 sender,
                 auto.getOwner(),
                 MessageType.DENIED,
@@ -129,7 +130,7 @@ public class AutoService {
             }
 
             Automobile automobile = new Automobile(
-                    null,
+                    System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000),
                     publishedAuto.getBrand(),
                     publishedAuto.getModel(),
                     publishedAuto.getRegistration_number(),

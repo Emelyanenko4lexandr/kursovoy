@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @AllArgsConstructor
@@ -54,7 +55,7 @@ public class RentService {
             throw new BadRequestException("The car cannot be rented");
         } else {
             Rent rent = new Rent(
-                    null,
+                    System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000),
                     currentUser,
                     auto,
                     Instant.now(),
@@ -75,7 +76,7 @@ public class RentService {
         Automobile auto = automobileRepository.findById(autoId)
                 .orElseThrow(() -> new NotFoundException("Automobile not found"));
 
-        Location newLocation = new Location(null, latitude, longitude);
+        Location newLocation = new Location(System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000), latitude, longitude);
 
         if (latitude != null && longitude != null) {
             auto.setRent(null);
