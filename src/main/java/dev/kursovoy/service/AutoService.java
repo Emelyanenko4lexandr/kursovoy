@@ -137,7 +137,7 @@ public class AutoService {
                     CarStatus.VERIFICATION,
                     null,
                     owner,
-                    new Location(null, publishedAuto.getLatitude(), publishedAuto.getLongitude())
+                    new Location(System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000), publishedAuto.getLatitude(), publishedAuto.getLongitude())
             );
 
             automobileRepository.save(automobile);
@@ -150,7 +150,7 @@ public class AutoService {
 //
 //            }
 
-            automobileRepository.save(automobile);
+//            automobileRepository.save(automobile);
 
             // Возвращаем сообщение об успешной загрузке
             return Map.of("message", "Automobile with photos uploaded successfully!");

@@ -45,13 +45,12 @@ public class AutoController {
         return autoService.getAuto(request.getAutoId());
     }
 
-    @PostMapping(value = "/owner", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/owner", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, String> publishAuto(
-            @RequestPart("publishedAuto") String publishedAutoJson,  // Получаем JSON как строку
-            @RequestParam("files") MultipartFile[] files,  // Принимаем массив файлов
+            @RequestBody String publishedAutoJson,
             Principal principal) {
 
-            return autoService.publishAuto(publishedAutoJson, files, principal.getName());
+        return autoService.publishAuto(publishedAutoJson, new MultipartFile[0], principal.getName());
 
     }
 

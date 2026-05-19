@@ -63,6 +63,8 @@ public class RentService {
             );
 
             rentRepository.save(rent);
+            rentRepository.flush();
+
             auto.setRent(rent);
             auto.setStatus(CarStatus.USED);
             automobileRepository.save(auto);
@@ -78,11 +80,15 @@ public class RentService {
 
         Location newLocation = new Location(System.currentTimeMillis() + ThreadLocalRandom.current().nextLong(1000), latitude, longitude);
 
-        if (latitude != null && longitude != null) {
-            auto.setRent(null);
-            auto.setLocation(newLocation);
-            automobileRepository.save(auto);
-        }
+        Rent rent = auto.getRent();
+        rent.setStatus(RentStatus.FINISHED);
+        rent.setEndRental(Instant.now());
+
+        auto.setRent(null);
+        auto.setStatus(CarStatus.FREE);
+        auto.setLocation(newLocation);
+        automobileRepository.save(auto);
+        rentRepository.save(rent);
 
         return autoMapper.toAutoResponse(auto);
     }

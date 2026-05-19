@@ -4,12 +4,13 @@ import dev.kursovoy.entity.Automobile;
 import dev.kursovoy.entity.Rent;
 import dev.kursovoy.entity.RentStatus;
 import dev.kursovoy.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface RentRepository extends CrudRepository<Rent, Long> {
+public interface RentRepository extends JpaRepository<Rent, Long> {
     List<Rent> findByTenantAndStatus(User tenant, RentStatus status);
     Optional<Rent> findByAutoAndTenantAndStatus(Automobile auto, User tenant, RentStatus status);
 }

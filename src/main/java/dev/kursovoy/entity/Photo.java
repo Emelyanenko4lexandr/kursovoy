@@ -16,7 +16,6 @@ import javax.persistence.*;
 public class Photo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

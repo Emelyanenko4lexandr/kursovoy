@@ -31,7 +31,6 @@ public class Automobile {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String brand;
@@ -49,7 +48,7 @@ public class Automobile {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "rent_id")
     private Rent rent;
 
